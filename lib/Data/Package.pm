@@ -45,64 +45,70 @@ Data::Package - Base class for packages that are purely data
 
 In the CPAN, a variety of different mechanisms are used by a variety
 of different authors in order to provide medium to large amounts of
-data to support the functionality contained in various modules.
+data to support the functionality contained in theirs or others modules.
 
-Some of these mechanism are, in this author's opinion, highly inelegant
-and often quite ugly, such as converting the Arial font into a
-2.7meg perl module.
+In this author's opinion these mechanisms are almost never clean
+and elegant and are often quite ugly. One of the worst examples is a module
+that converts the Arial font into a 2.7meg perl module.
 
 Why exactly the authors are having to resort to these measures is often
-unclear, although convenience or to an ability to leverage the ease with
-which which modules can be found (compared to data files) one thing is
-very clear.
+unclear, although I suspect it is primarily the ease with which modules
+can be found (compared to data files). Regardless, one thing is very
+clear.
 
-There is B<no> obvious, easy and universal way in which to create and
-deliver a "Data Product" via CPAN. A Data Product is a package in where
-there is little or no functionality and all of the value is contained in
-the data itself.
+There is B<no> obvious, easy or universal way in which to create and
+deliver a "Data Product" via CPAN. A data product is a package in where
+there is little or more likely B<no> functionality or code, and all of the
+"value" in the package is contained in the data itself.
 
-Within the global and unique package namespace of perl, most of the
-packages represent code, in the form of APIs, but this does not mean
-that code is the B<only> thing that reserve a package name.
+Within the global and unique namespace of perl, most of the packages
+represent code in the form of APIs. However this does not mean that code
+is the B<only> thing that is capable of reserving a package name.
 
 =head1 DESCRIPTION
 
-Data::Package provides the core of a highly scalable and extendable API
-that allows data packages and data products to be delivered via CPAN.
+Data::Package provides the core of what is hoped will be a highly scalable
+and extendable API to create data packages and data products that can be
+delivered via the CPAN (and thus anywhere else).
 
-It provides a minimal API that separates getting the data from the
-methods by which the data is obtained, installed, accessed and loaded.
+It provides a minimal API that separates how the developer obtains the
+data in their code from the methods by which the data is actually obtained,
+installed, loaded, parsed and accessed.
 
-The intent is that the consumer of the data should not have to care
-B<how> the data is obtained, just that you can always obtain the data
-you need in the format that you want.
+The intent is that the consumer of the data should not have to know or care
+B<how> the data is obtained, just that they are always able to obtain the
+data when they want in the format they want.
 
-It allows the author or provider of the data to assign the data a unique
-name within the package namespace, while change or improve the
-underlying install, storage and loading mechanism without the need for
-anything that accesses the data to have to be changed.
+It also allows the author or provider of the data to assign the data to
+a unique location within the perl namespace. The can then change or improve
+the underlying install, storage and loading mechanisms without the need for
+any code using that data to have to be changed.
 
 =head2 API Overview
 
-The core API requires that only only two static methods be defined,
-and probably only one matters if you wrote both the data package,
-B<and> code that is using it.
+The core Data::Package API requires that only only two static methods
+be defined, and probably only one matters if you wrote both the data
+package, B<and> code that is using it.
 
 In the simplest and (probably) most common case, where the data package
-returns only a single known object type, you should need only to load
+returns only a single known object type, you should only have to load
 the module and then get the data from it.
 
-  use Some::Data::Package;
+  use My::Data::Package;
   
-  $Data = Some::Data::Package->get;
+  $Data = My::Data::Package->get;
 
-For more complex cases capable of providing the data in several
-formats, you can use the C<provides> method to find out what types
-of object the data package is capable of providing.
+For more complex cases where the data package is capable of providing the
+data in several formats, you can use the C<provides> method to find out what
+types of object the data package is capable of providing.
 
-  @classes = Some::Data::Package->provides;
+  @classes = My::Data::Package->provides;
 
-etc... etc...
+Your code will most likely simply be confirming that the data is available
+in a particular format. Once you know you are able to get it in the format
+that you want, you can simple do the following.
+
+  $Data = My::Data::Package->get('Object::Type');
 
 =head1 STATUS
 
@@ -132,7 +138,7 @@ use Param::Coerce    ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.01';
+	$VERSION = '0.04';
 }
 
 
@@ -267,7 +273,7 @@ sub get {
 
 Bugs should always be submitted via the CPAN bug tracker
 
-L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Data%3A%3APackage>
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Data-Package>
 
 For other issues, contact the maintainer
 
