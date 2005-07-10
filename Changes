@@ -1,5 +1,8 @@
 Revision history for Perl extension Data::Package
 
+0.05 Sun Jul 10 2005
+	- Fixing bugs in _provides
+
 0.02 Tue Feb 15 2005
 	- Removing braindead Build.PL
 

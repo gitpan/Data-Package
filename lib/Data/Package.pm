@@ -45,31 +45,32 @@ Data::Package - Base class for packages that are purely data
 
 In the CPAN, a variety of different mechanisms are used by a variety
 of different authors in order to provide medium to large amounts of
-data to support the functionality contained in theirs or others modules.
+data to support the functionality contained in theirs or other people's
+modules.
 
 In this author's opinion these mechanisms are almost never clean
-and elegant and are often quite ugly. One of the worst examples is a module
-that converts the Arial font into a 2.7meg perl module.
+and elegant and are often quite ugly. One of the worst examples was a
+module that converted the Arial font into a 2.7meg perl module.
 
 Why exactly the authors are having to resort to these measures is often
 unclear, although I suspect it is primarily the ease with which modules
 can be found (compared to data files). Regardless, one thing is very
 clear.
 
-There is B<no> obvious, easy or universal way in which to create and
+There is B<no> obvious, easy and universal way in which to create and
 deliver a "Data Product" via CPAN. A data product is a package in where
-there is little or more likely B<no> functionality or code, and all of the
-"value" in the package is contained in the data itself.
+there is little or more likely B<no> functionality or code, and all of
+the "value" in the package is contained in the data itself.
 
 Within the global and unique namespace of perl, most of the packages
-represent code in the form of APIs. However this does not mean that code
-is the B<only> thing that is capable of reserving a package name.
+represent code in the form of APIs. However this does not mean that
+code is the B<only> thing that is capable of reserving a package name.
 
 =head1 DESCRIPTION
 
-Data::Package provides the core of what is hoped will be a highly scalable
-and extendable API to create data packages and data products that can be
-delivered via the CPAN (and thus anywhere else).
+C<Data::Package> provides the core of what is hoped will be a highly
+scalable and extendable API to create data packages and data products
+that can be delivered via the CPAN (and thus anywhere else).
 
 It provides a minimal API that separates how the developer obtains the
 data in their code from the methods by which the data is actually obtained,
@@ -138,7 +139,7 @@ use Param::Coerce    ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.04';
+	$VERSION = '0.05';
 }
 
 
@@ -229,8 +230,9 @@ sub _provides {
 	my $methods = Class::Inspector->methods($class)
 		or die "Error while looking for providor method in $class";
 
-	# Filter to just provider methods
-	grep { /^__as(?:_[^\W\d]\w*)+$/ } @$methods;
+	# Filter to just provider methods and convert to classes
+	return map  { s/^__as_//; s/_/::/g; $_ }
+	       grep { /^__as(?:_[^\W\d]\w*)+$/ } @$methods;
 }
 
 =pod
@@ -259,7 +261,7 @@ sub get {
 	#
 	# So lets find what we need to deliver, and then call it.
 	my @classes = $class->provides(@_) or return undef;
-	my $want = shift @classes;
+	my $want    = shift @classes;
 
 	# Leverage coerce to do the actual loading
 	Param::Coerce::_coerce( $want, $class->new );

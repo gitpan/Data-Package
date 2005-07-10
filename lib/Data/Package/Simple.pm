@@ -8,24 +8,27 @@ Data::Package::Simple - Implement simple data packages based on freeze/thaw form
 
 =head1 SYNOPSIS
 
-  # A basic class that loads a structure stored as
-  # a YAML document from the __DATA__ section.
+  # A complete cut-and-paste package that loads data stored
+  # as YAML from the end of the file.
   package My::Data;
   
   use YAML 'thaw';
   
   use base 'Data::Package::Simple';
   
+  use vars qw{$VERSION};
+  $VERSION = '0.01';
+  
   1;
   
   __DATA__
-  foo: bar
-  this: that
+  Your: data
+  goes: here
   children:
-    - one
+    - your
     - two
     - three
-    - four
+    - etc etc etc
 
 =head1 DESCRIPTION
 
