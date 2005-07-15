@@ -121,7 +121,7 @@ a sufficiently complete unit test library for starters.
 
 About half the implementation is done by pulling in functionality from
 other dependant modules, which are not completely production-standard
-themselves (in the case of L<Param::Coerce>. For a proper production
+themselves (in the case of L<Params::Coerce>. For a proper production
 grade version, we probably shouldn't have any dependencies.
 
 However, the API itself is stable and final, and you can write code
@@ -133,13 +133,12 @@ not affect it.
 =cut
 
 use strict;
-use UNIVERSAL 'isa';
 use Class::Inspector ();
-use Param::Coerce    ();
+use Params::Coerce   ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.05';
+	$VERSION = '0.06';
 }
 
 
@@ -214,7 +213,7 @@ sub provides {
 	# Return the full list unless we were given a filter
 	my $want = shift or return @provides;
 
-	grep { isa($_, $want) } @provides;
+	grep { UNIVERSAL::isa($_, $want) } @provides;
 }
 
 sub _provides {
@@ -264,7 +263,7 @@ sub get {
 	my $want    = shift @classes;
 
 	# Leverage coerce to do the actual loading
-	Param::Coerce::_coerce( $want, $class->new );
+	Params::Coerce::_coerce( $want, $class->new );
 }
 
 1;

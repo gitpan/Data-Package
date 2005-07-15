@@ -1,5 +1,5 @@
 name: Data-Package
-version: 0.05
+version: 0.06
 abstract: Base class for packages that are purely data
 author: Adam Kennedy<cpan@ali.as>
 license: perl
@@ -10,7 +10,7 @@ build_requires:
 requires:
   perl: 5.005
   Class::Inspector: 1.07
-  Param::Coerce: 0.06
+  Params::Coerce: 0.06
 no_index:
   directory:
     - inc
