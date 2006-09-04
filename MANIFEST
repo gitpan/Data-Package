@@ -1,6 +1,5 @@
 Changes
 inc/Module/Install.pm
-inc/Module/Install/AutoInstall.pm
 inc/Module/Install/Base.pm
 inc/Module/Install/Can.pm
 inc/Module/Install/Fetch.pm
@@ -9,7 +8,6 @@ inc/Module/Install/Metadata.pm
 inc/Module/Install/Win32.pm
 inc/Module/Install/WriteAll.pm
 lib/Data/Package.pm
-lib/Data/Package/Simple.pm
 LICENSE
 Makefile.PL
 MANIFEST			This list of files

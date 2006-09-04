@@ -1,5 +1,9 @@
 Revision history for Perl extension Data::Package
 
+1.00 Mon  4 Sep 2006
+	- Importing from old CVS to new SVN repository
+	- Upgrading to Module::Install 0.64
+
 0.06 Fri Jul 13 2005
 	- Updating to use Params::Coerce, instead of Param::Coerce
 

@@ -1,17 +1,17 @@
-name: Data-Package
-version: 0.06
 abstract: Base class for packages that are purely data
-author: Adam Kennedy<cpan@ali.as>
-license: perl
-distribution_type: module
-build_requires:
-  File::Spec: 0.82
+author: Adam Kennedy <adamk@cpan.org>
+build_requires: 
   Test::More: 0.47
-requires:
-  perl: 5.005
+distribution_type: module
+generated_by: Module::Install version 0.63
+license: perl
+name: Data-Package
+no_index: 
+  directory: 
+    - inc
+    - t
+requires: 
   Class::Inspector: 1.07
   Params::Coerce: 0.06
-no_index:
-  directory:
-    - inc
-generated_by: Module::Install version 0.36
+  perl: 5.005
+version: 1.00

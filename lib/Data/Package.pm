@@ -132,13 +132,14 @@ not affect it.
 
 =cut
 
+use 5.005;
 use strict;
 use Class::Inspector ();
 use Params::Coerce   ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.06';
+	$VERSION = '1.00';
 }
 
 
@@ -155,7 +156,7 @@ BEGIN {
 The C<new> constructor is provided mainly as a convenience, and to let
 you create handles to the data that can be passed around easily.
 
-Takes new arguments, and returns a new blessed object of the same class
+Takes no arguments, and returns a new blessed object of the same class
 that you called it for.
 
 =cut
@@ -226,8 +227,8 @@ sub _provides {
 	}
 
 	# Scan the class for __as_Foo_Bar methods
-	my $methods = Class::Inspector->methods($class)
-		or die "Error while looking for providor method in $class";
+	my $methods = Class::Inspector->methods($class) or die
+		"Error while looking for providor method in $class";
 
 	# Filter to just provider methods and convert to classes
 	return map  { s/^__as_//; s/_/::/g; $_ }
@@ -257,7 +258,7 @@ sub get {
 	# Given that they our subclass did not write it's own version
 	# of the ->get method, they must be using coercion provider
 	# methods.
-	#
+
 	# So lets find what we need to deliver, and then call it.
 	my @classes = $class->provides(@_) or return undef;
 	my $want    = shift @classes;
@@ -280,11 +281,12 @@ For other issues, contact the maintainer
 
 =head1 AUTHOR
 
-Adam Kennedy (Maintainer), L<http://ali.as/>, cpan@ali.as
+Adam Kennedy E<lt>adamk@cpan.orgE<gt>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2005 Adam Kennedy. All rights reserved.
+Copyright 2005 - 2006 Adam Kennedy.
+
 This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.
 

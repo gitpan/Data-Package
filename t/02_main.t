@@ -3,23 +3,16 @@
 # Main testing for Data::Package
 
 use strict;
-use lib ();
-use UNIVERSAL 'isa';
-use File::Spec::Functions ':ALL';
 BEGIN {
-	$| = 1;
-	unless ( $ENV{HARNESS_ACTIVE} ) {
-		require FindBin;
-		chdir ($FindBin::Bin = $FindBin::Bin); # Avoid a warning
-		lib->import( catdir( updir(), updir(), 'modules') );
-	}
+	$|  = 1;
+	$^W = 1;
 }
 
 use Test::More tests => 15;
 use Data::Package;
 
 # Test the normal case
-ok( isa('Foo::Data', 'Data::Package'), 'Foo::Data is a Data::Package' );
+ok( UNIVERSAL::isa('Foo::Data', 'Data::Package'), 'Foo::Data is a Data::Package' );
 is_deeply( [ Foo::Data->provides() ],      [ 'Foo' ], '->provides returns as expected' );
 is_deeply( [ Foo::Data->provides('Foo') ], [ 'Foo' ], '->provides(Foo) returns as expected' );
 is_deeply( [ Foo::Data->provides('Bar') ], [       ], '->provides(Bar) returns as expected' );
@@ -31,7 +24,7 @@ $obj = Foo::Data->get('Bar');
 is( $obj, undef, '->get(bad) returns undef' );
 
 # Test the inherited case
-ok( isa('Bar::Data', 'Data::Package'), 'Bar::Data is a Data::Package' );
+ok( UNIVERSAL::isa('Bar::Data', 'Data::Package'), 'Bar::Data is a Data::Package' );
 is_deeply( [ Bar::Data->provides ],        [ 'Bar' ], '->provides returns as expected' );
 is_deeply( [ Bar::Data->provides('Bar') ], [ 'Bar' ], '->provides(Bar) returns as expected' );
 is_deeply( [ Bar::Data->provides('Foo') ], [ 'Bar' ], '->provides(Foo) returns as expected' );
