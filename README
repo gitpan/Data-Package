@@ -148,7 +148,7 @@ METHODS
     number of classes in scalar context. This also lets you do things like:
 
       if ( Data::Thingy->provides('Big::Thing') ) {
-            die "Data::Thing cannot provide a Big::Thing";
+            die "Data::Thingy cannot provide a Big::Thing";
       }
 
   get [ $class ]

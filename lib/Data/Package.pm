@@ -134,12 +134,14 @@ not affect it.
 
 use 5.005;
 use strict;
+use Params::Util     '_CLASS';
 use Class::Inspector ();
+use Params::Util     qw{ _CLASS };
 use Params::Coerce   ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '1.00';
+	$VERSION = '1.02';
 }
 
 
@@ -200,21 +202,41 @@ And either way, the method returns the classes in list context, or the
 number of classes in scalar context. This also lets you do things like:
 
   if ( Data::Thingy->provides('Big::Thing') ) {
-  	die "Data::Thing cannot provide a Big::Thing";
+  	die "Data::Thingy cannot provide a Big::Thing";
   }
 
 =cut
 
 sub provides {
 	my $class = ref $_[0] ? ref shift : shift;
+	my $want  = _CLASS(shift);
 
 	# Get the raw list of classes
-	my @provides = $class->_provides;
+	my %seen     = ();
+	my @provides = grep { ! $seen{$_}++ }
+	               grep { defined $_    }
+	               $class->_provides;
 
 	# Return the full list unless we were given a filter
-	my $want = shift or return @provides;
+	return @provides unless $want;
 
-	grep { UNIVERSAL::isa($_, $want) } @provides;
+	# Filter for the class we want, loading as needed
+	my @filtered = ();
+	foreach my $p ( @provides ) {
+		if ( Class::Inspector->loaded($p) ) {
+
+		} else {
+			eval "require $p;";
+			if ( $@ ) {
+				next;
+			}
+		}
+		if ( $p->isa($want) ) {
+			push @filtered, $p;
+		}
+	}
+
+	return @filtered;
 }
 
 sub _provides {
@@ -227,8 +249,8 @@ sub _provides {
 	}
 
 	# Scan the class for __as_Foo_Bar methods
-	my $methods = Class::Inspector->methods($class) or die
-		"Error while looking for providor method in $class";
+	my $methods = Class::Inspector->methods($class)
+		or die "Error while looking for providor method in $class";
 
 	# Filter to just provider methods and convert to classes
 	return map  { s/^__as_//; s/_/::/g; $_ }
