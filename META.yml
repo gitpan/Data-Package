@@ -23,4 +23,4 @@ requires:
   Params::Coerce: 0.06
   Params::Util: 0.21
   perl: 5.005
-version: 1.04
+version: 1.05
